@@ -39,4 +39,12 @@ class Flower {
       this.selected = false;
     }
   }
+
+  checkCollision(otherFlower) {
+    let distance = dist(this.x, this.y,otherFlower.x, otherFlower.y);
+    if(distance < this.size/2 +otherFlower.size/2) {
+      this.xSpeed = -this.xSpeed;
+      this.ySpeed = -this.ySpeed;
+    }
+  }
 }

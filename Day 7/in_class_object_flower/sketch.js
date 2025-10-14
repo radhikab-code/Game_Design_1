@@ -10,6 +10,14 @@ function draw() {
     //check if the current mX and mY IS ON THE FLOWER
     flowers[i].checkMousePosition(mouseX, mouseY);
 
+       //check collision with ALL other flowers
+    for(let j = 0;j<flowers.length;j++) {
+      if(i!=j) {
+        flowers[i].checkCollision(flowers[j]);
+      }
+      
+    }
+
     //moves and draws the flower
     flowers[i].moveFlower();
     flowers[i].drawFlower();
