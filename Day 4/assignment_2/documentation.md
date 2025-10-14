@@ -1,0 +1,1 @@
+On day 4 we learned about spritesheets and how it helps in making clean animation. the next assignment was to create a spritesheet of our own. I downloaded a spritesheet of a monster sneezing and as it was not in the correct sequence for the spritesheet to work, I first made corrections using illustrator. Then exported it as an png and made a spritesheet.

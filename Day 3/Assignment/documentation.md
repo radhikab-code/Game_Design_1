@@ -1,0 +1,1 @@
+On day 3, in class we learned about the 10 titles and how it can generate beautiful patterns. For the assignment I tried to make it random in terms of the shape generation as well as the colours. For colours even though its random but there is a particular range so that it looks soft. 

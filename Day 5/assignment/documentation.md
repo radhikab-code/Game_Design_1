@@ -1,0 +1,1 @@
+On day 5 we learned about arrays and how to use them. The assignment was to create a narrative based iteraction of 30 or more seconds. For that I wanted to show the journey of a baby turtle from the egg hatching and going into the sea. 
