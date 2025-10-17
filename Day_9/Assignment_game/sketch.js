@@ -3,18 +3,25 @@
 //after the egg hatched i want the baby tuttle to walk till the ocean water(2D sprite)
 
 let speed = 50;
-let distance = 0;
+let ydist = 0;
+let xdist = 0;
 let gameState = 1;
 let tileSize = 8;
-let beachLimit = 3000;
+let beachLimit = 4000;
 let h = [];
 let s = [];
 let b = [];
+let opacity = 255;
+let Image1, Image2, image3, image4;
+let gTrash;
+
 //turtle walking 
 let spriteImage;
 let sRows1 = 2, sCols1 = 4;
 let sprites1 = []
 let count1 = 0;
+
+
 
 
 //egg hatch sprite 
@@ -26,6 +33,10 @@ let count = 0;
 function preload() {
   spriteImg = loadImage("images/turtle_egg.png");
   spriteImage = loadImage('images/turtle_walk.png');
+  Image1 = loadImage('images/plastic_bottle.png');
+  Image2 = loadImage('images/dead_fish.png');
+  Image3 = loadImage('images/can_trash.png');
+  Image4 = loadImage('images/apple.png');
 }
 let sWidth
 let sHeight
@@ -43,11 +54,12 @@ function setup() {
   setupBackground();
   drawBackground();
   angleMode(DEGREES);
+  //gTrash.move();
 
   // turtle walk
   sWidth1 = spriteImage.width / sCols1;
   sHeight1 = spriteImage.height / sRows1;
-  //console.log("test")
+  
 
   //loop the sprite image and store it in a 1D array sprites
   for (let i = 0; i < sRows1; i += 1) {
@@ -137,10 +149,22 @@ function drawBackground() {
 
 
 function draw() {
+
   if(keyIsDown(RIGHT_ARROW)) {
-  console.log("check");
   drawBackground();
-   turtleWalk();
+   turtleWalk(1,0,90);
+  }
+  else if(keyIsDown(LEFT_ARROW)) {
+  drawBackground();
+   turtleWalk(-1,0,270);
+  }
+  else if(keyIsDown(UP_ARROW)) {
+  drawBackground();
+   turtleWalk(0,-1,0);
+  }
+  else if(keyIsDown(DOWN_ARROW)) {
+  drawBackground();
+   turtleWalk(0,1,180);
   }
 }
 
@@ -150,27 +174,50 @@ function keyPressed() {
 }
 
 
-function turtleWalk() {
+function turtleWalk(xdir, ydir, rotateAngle) {
+  //egg hatch
   if (gameState == 1) {
     count++;
     push();
     translate(sWidth / 2 + 300, sHeight / 2);
     rotate(90);
-    image(sprites[count % (sprites.length)], 0, 0);
+    scale(0.5);
+    image(sprites[count % (sprites.length)],-sWidth/2, -sHeight/2, sWidth, sHeight);
+    scale(1);
     pop();
     if (count == 7) {
       gameState = 2;
       count = 0;
     }
   }
+  //turtle walk
   else if (gameState == 2) {
     count++;
     push();
-    translate(sWidth1 / 2 + 300 + distance, sHeight1 / 2);
-    rotate(90);
-    image(sprites1[count % (sprites1.length)], 0, 0);
-    distance += speed;
+    translate(sWidth1 / 2 + 300 + xdist, ydist +( sHeight1 / 2));
+    rotate(rotateAngle);
+    scale(0.5);
+    tint(255,opacity);
+    image(sprites1[count % (sprites1.length)], -sWidth1/2, -sHeight1/2, sWidth1, sHeight1);
+    scale(1);
     pop();
+    xdist += speed*xdir;
+    ydist += speed*ydir;
+    turtleVanish(sWidth1/2 + 300+ xdist);
   }
 }
+ 
+function turtleVanish(xpos){
+  if (xpos <= 4000) {
+    opacity = 255; 
+  } 
+  else if (xpos > 4000 && xpos < 4800) {
+    opacity = map(xpos, 4000, 4800, 255, 0); 
+  } 
+  else {
+    opacity = 0; 
+  }
+
+}
+
 
