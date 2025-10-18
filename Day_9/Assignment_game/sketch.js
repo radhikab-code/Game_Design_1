@@ -13,7 +13,7 @@ let s = [];
 let b = [];
 let opacity = 255;
 let Image1, Image2, image3, image4;
-let gTrash;
+
 
 //turtle walking 
 let spriteImage;
@@ -33,10 +33,9 @@ let count = 0;
 function preload() {
   spriteImg = loadImage("images/turtle_egg.png");
   spriteImage = loadImage('images/turtle_walk.png');
-  Image1 = loadImage('images/plastic_bottle.png');
-  Image2 = loadImage('images/dead_fish.png');
-  Image3 = loadImage('images/can_trash.png');
-  Image4 = loadImage('images/apple.png');
+  image1 = loadImage('images/plastic_bottle.png');
+  image2 = loadImage('images/can_trash_50.png');
+  image3 = loadImage('images/apple.png');
 }
 let sWidth
 let sHeight
@@ -44,7 +43,16 @@ let sHeight
 let sWidth1
 let sHeight1
 
+let gTrash;
+
+
+
+
+
 function setup() {
+
+  gTrash = new Trash(3);
+
 
   frameRate(8);
   createCanvas(5000, 800);
@@ -54,12 +62,13 @@ function setup() {
   setupBackground();
   drawBackground();
   angleMode(DEGREES);
-  //gTrash.move();
+
+
 
   // turtle walk
   sWidth1 = spriteImage.width / sCols1;
   sHeight1 = spriteImage.height / sRows1;
-  
+
 
   //loop the sprite image and store it in a 1D array sprites
   for (let i = 0; i < sRows1; i += 1) {
@@ -150,27 +159,50 @@ function drawBackground() {
 
 function draw() {
 
-  if(keyIsDown(RIGHT_ARROW)) {
-  drawBackground();
-   turtleWalk(1,0,90);
+  fill(0);
+  textSize(38);
+  textAlign(LEFT, TOP);
+  text("AVOID TRASH! USE ARROW KEYS TO MOVE THE TURTLE.", 50, 50);
+
+  if (keyIsDown(RIGHT_ARROW)) {
+    drawBackground();
+    fill(0);
+    textSize(38);
+    textAlign(LEFT, TOP);
+    text("AVOID TRASH! USE ARROW KEYS TO MOVE THE TURTLE.", 50, 50);
+    turtleWalk(1, 0, 90);
   }
-  else if(keyIsDown(LEFT_ARROW)) {
-  drawBackground();
-   turtleWalk(-1,0,270);
+  else if (keyIsDown(LEFT_ARROW)) {
+    drawBackground();
+    fill(0);
+    textSize(38);
+    textAlign(LEFT, TOP);
+    text("AVOID TRASH! USE ARROW KEYS TO MOVE THE TURTLE.", 50, 50);
+    turtleWalk(-1, 0, 270);
   }
-  else if(keyIsDown(UP_ARROW)) {
-  drawBackground();
-   turtleWalk(0,-1,0);
+  else if (keyIsDown(UP_ARROW)) {
+    drawBackground();
+    fill(0);
+    textSize(38);
+    textAlign(LEFT, TOP);
+    text("AVOID TRASH! USE ARROW KEYS TO MOVE THE TURTLE.", 50, 50);
+    turtleWalk(0, -1, 0);
   }
-  else if(keyIsDown(DOWN_ARROW)) {
-  drawBackground();
-   turtleWalk(0,1,180);
+  else if (keyIsDown(DOWN_ARROW)) {
+    drawBackground();
+    fill(0);
+    textSize(38);
+    textAlign(LEFT, TOP);
+    text("AVOID TRASH! USE ARROW KEYS TO MOVE THE TURTLE.", 50, 50);
+    turtleWalk(0, 1, 180);
   }
+
+  gTrash.show();
 }
 
 function keyPressed() {
-  
-  
+
+
 }
 
 
@@ -182,7 +214,7 @@ function turtleWalk(xdir, ydir, rotateAngle) {
     translate(sWidth / 2 + 300, sHeight / 2);
     rotate(90);
     scale(0.5);
-    image(sprites[count % (sprites.length)],-sWidth/2, -sHeight/2, sWidth, sHeight);
+    image(sprites[count % (sprites.length)], -sWidth / 2, -sHeight / 2, sWidth, sHeight);
     scale(1);
     pop();
     if (count == 7) {
@@ -192,30 +224,47 @@ function turtleWalk(xdir, ydir, rotateAngle) {
   }
   //turtle walk
   else if (gameState == 2) {
+
     count++;
     push();
-    translate(sWidth1 / 2 + 300 + xdist, ydist +( sHeight1 / 2));
+    translate(sWidth1 / 2 + 300 + xdist, ydist + (sHeight1 / 2));
     rotate(rotateAngle);
     scale(0.5);
-    tint(255,opacity);
-    image(sprites1[count % (sprites1.length)], -sWidth1/2, -sHeight1/2, sWidth1, sHeight1);
+    tint(255, opacity);
+    image(sprites1[count % (sprites1.length)], -sWidth1 / 2, -sHeight1 / 2, sWidth1, sHeight1);
     scale(1);
     pop();
-    xdist += speed*xdir;
-    ydist += speed*ydir;
-    turtleVanish(sWidth1/2 + 300+ xdist);
+    xdist += speed * xdir;
+    ydist += speed * ydir;
+    if (gTrash.detectCollision(sWidth1 / 2 + 300 + xdist, ydist + (sHeight1 / 2), sWidth1)) {
+      xdist -= speed * xdir;
+      ydist -= speed * ydir;
+    }
+
+    turtleVanish(sWidth1 / 2 + 300 + xdist);
   }
+
 }
- 
-function turtleVanish(xpos){
+
+function textVanish() {
+  fill(0);
+  textSize(50);
+  textAlign(RIGHT, BOTTOM);
+  text("Every year, many turtles hatch, but few survive as plastic pollution threatens their journey to the sea..", 4850, 750);
+
+}
+
+
+function turtleVanish(xpos) {
   if (xpos <= 4000) {
-    opacity = 255; 
-  } 
+    opacity = 255;
+  }
   else if (xpos > 4000 && xpos < 4800) {
-    opacity = map(xpos, 4000, 4800, 255, 0); 
-  } 
+    opacity = map(xpos, 4000, 4800, 255, 0);
+  }
   else {
-    opacity = 0; 
+    opacity = 0;
+    textVanish();
   }
 
 }
