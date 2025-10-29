@@ -10,6 +10,19 @@ let gathering = false;
 let gathered = false;
 let centerX, centerY;
 let speed = 5;
+let gameState = 1;
+let explosionSound;
+let explosionSoundEnd;
+let kidsSound;
+let sparkleSound;
+
+
+function preload() {
+  explosionSoundEnd = loadSound("asset/firework_explosion_1.wav");
+  explosionSound = loadSound("asset/multiple_fireworks_explosions.wav");
+  kidsSound = loadSound("asset/laughing_children_indoors.wav");
+  sparkleSound = loadSound("asset/sparkles.wav");
+}
 
 
 function setup() {
@@ -26,101 +39,119 @@ function setup() {
 }
 
 function draw() {
-  background(15, 20, 40);
-  drawStars();
-
-  fill(255);
-  textAlign(CENTER);
-  textSize(22);
-
-  //if (keyIsDown(LEFT_ARROW))player.moveLeft();
-
-  if (!allLit) {
-    text("🪔 Move your mouse and light everyone's sparklers 🌟", width / 2, 50);
-  } else if (gathering && !fireworkLaunched) {
-    text("Everyone’s sparkler glows — let’s come together 💛", width / 2, 50);
-  }
-
-  // Player movement
-  player.update();
-  player.display();
-  if(!allLit){
-    player.followMouse();
-  }
-  
-
-  // Friends behavior
-  for (let f of friends) {
-    f.update();
-    f.display();
-
-    if (!f.lit && dist(player.x, player.y, f.x, f.y) < 70) {
-      f.lit = true;
-      fireworks.push(new Firework(f.x, f.y - 50));
-    }
-  }
-
-  // Spark effects
-  for (let fw of fireworks) {
-    fw.update();
-    fw.display();
-  }
-  fireworks = fireworks.filter(fw => !fw.done);
-
-  // Check if all are lit
-  if (!allLit && friends.every(f => f.lit)) {
-    allLit = true;
-    gathering = true;
-  }
-
-  // Gather to center
-  if (gathering && !gathered) {
-    let allArrived = true;
-    for (let i = 0; i < friends.length; i++) {
-      let angle = TWO_PI / numFriends * i;
-      let targetX = centerX + cos(angle) * 120;
-      let targetY = centerY + sin(angle) * 120;
-      friends[i].x = lerp(friends[i].x, targetX, 0.02);
-      friends[i].y = lerp(friends[i].y, targetY, 0.02);
-      if (dist(friends[i].x, friends[i].y, targetX, targetY) > 2) {
-        allArrived = false;
-      }
-    }
-    player.x = lerp(player.x, centerX, 0.02);
-    player.y = lerp(player.y, centerY, 0.02);
-    if (allArrived && dist(player.x, player.y, centerX, centerY) < 3) {
-      gathered = true;
-      gathering = false;
-      setTimeout(() => launchSkyFirework(), 2000);
-    }
-  }
-
-  // Sky firework logic
-  if (fireworkLaunched && !fireworkExploded) {
-    skyFirework.y -= 8;
-    noStroke();
-    fill(255, 220, 150);
-    ellipse(skyFirework.x, skyFirework.y, 12);
-    // small trail
-    fill(255, 180, 80, 150);
-    ellipse(skyFirework.x, skyFirework.y + 20, 8);
-    if (skyFirework.y < height / 3) {
-      fireworkExploded = true;
-      for (let i = 0; i < 12; i++) {
-        fireworks.push(new SkyBurst(skyFirework.x, skyFirework.y));
-      }
-    }
-  }
-
-  if (fireworkExploded) {
+  if (gameState == 1){
+    background(15, 20, 40);
     fill(255);
-    textSize(28);
-    text("🌟 Joy grows when shared 🌟", width / 2, height - 80);
+    textAlign(CENTER);
+    textSize(22);
+    text(" 🪔 IT'S DIWALI 🪔 ", width / 2, 320);
+    text(" 🌟  Press ENTER to start  🌟", width / 2, height/2);
+  }
+  else if(gameState == 2){
+      background(15, 20, 40);
+      drawStars();
+
+      fill(255);
+      textAlign(CENTER);
+      textSize(22);
+
+      //if (keyIsDown(LEFT_ARROW))player.moveLeft();
+
+      if (!allLit) {
+        text("🪔 Move your mouse and light everyone's sparklers 🌟", width / 2, 50);
+      } else if (gathering && !fireworkLaunched) {
+        text("Everyone’s sparkler glows — let’s come together 💛", width / 2, 50);
+      }
+
+      // Player movement
+      player.update();
+      player.display();
+      if(!allLit){
+        player.followMouse();
+      }
+      
+
+      // Friends behavior
+      for (let f of friends) {
+        f.update();
+        f.display();
+
+        if (!f.lit && dist(player.x, player.y, f.x, f.y) < 70) {
+          f.lit = true;
+          fireworks.push(new Firework(f.x, f.y - 50));
+          sparkleSound.play();
+        }
+      }
+
+      // Spark effects
+      for (let fw of fireworks) {
+        fw.update();
+        fw.display();
+      }
+      fireworks = fireworks.filter(fw => !fw.done);
+
+      // Check if all are lit
+      if (!allLit && friends.every(f => f.lit)) {
+        allLit = true;
+        gathering = true;
+      }
+
+      // Gather to center
+      if (gathering && !gathered) {
+        let allArrived = true;
+        for (let i = 0; i < friends.length; i++) {
+          let angle = TWO_PI / numFriends * i;
+          let targetX = centerX + cos(angle) * 120;
+          let targetY = centerY + sin(angle) * 120;
+          friends[i].x = lerp(friends[i].x, targetX, 0.02);
+          friends[i].y = lerp(friends[i].y, targetY, 0.02);
+          if (dist(friends[i].x, friends[i].y, targetX, targetY) > 2) {
+            allArrived = false;
+          }
+        }
+        player.x = lerp(player.x, centerX, 0.02);
+        player.y = lerp(player.y, centerY, 0.02);
+        if (allArrived && dist(player.x, player.y, centerX, centerY) < 3) {
+          gathered = true;
+          gathering = false;
+          setTimeout(() => launchSkyFirework(), 2000);
+        }
+      }
+
+      // Sky firework logic
+      if (fireworkLaunched && !fireworkExploded) {
+        skyFirework.y -= 8;
+        noStroke();
+        fill(255, 220, 150);
+        ellipse(skyFirework.x, skyFirework.y, 12);
+        // small trail
+        fill(255, 180, 80, 150);
+        ellipse(skyFirework.x, skyFirework.y + 20, 8);
+        if (skyFirework.y < height / 3) {
+          fireworkExploded = true;
+          explosionSoundEnd.play();
+          for (let i = 0; i < 12; i++) {
+            fireworks.push(new SkyBurst(skyFirework.x, skyFirework.y));
+          }
+        }
+      }
+
+      if (fireworkExploded) {
+        fill(255);
+        textSize(28);
+        text("🌟 Joy grows when shared 🌟", width / 2, height - 80);
+      }
   }
 }
+  
 
 function keyPressed() {
   let step = 20;
+  if (keyCode === ENTER && gameState == 1){
+    gameState++;
+    kidsSound.play();
+  } 
+  player.x += step;
   //if (keyIsDown(LEFT_ARROW))player.moveLeft();
   if (keyCode === RIGHT_ARROW) player.x += step;
   if (keyCode === UP_ARROW) player.y -= step;
@@ -133,6 +164,7 @@ function keyPressed() {
 function launchSkyFirework() {
   skyFirework = { x: centerX, y: centerY };
   fireworkLaunched = true;
+  explosionSound.play();
 }
 
 // Sparkler class
