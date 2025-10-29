@@ -1,6 +1,6 @@
 let player;
 let friends = [];
-let numFriends = 12;
+let numFriends = 15;
 let allLit = false;
 let fireworks = [];
 let skyFirework;
@@ -101,8 +101,8 @@ function draw() {
         let allArrived = true;
         for (let i = 0; i < friends.length; i++) {
           let angle = TWO_PI / numFriends * i;
-          let targetX = centerX + cos(angle) * 120;
-          let targetY = centerY + sin(angle) * 120;
+          let targetX = centerX + cos(angle) * 200;
+          let targetY = centerY + sin(angle) * 200;
           friends[i].x = lerp(friends[i].x, targetX, 0.02);
           friends[i].y = lerp(friends[i].y, targetY, 0.02);
           if (dist(friends[i].x, friends[i].y, targetX, targetY) > 2) {
