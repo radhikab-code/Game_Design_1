@@ -74,7 +74,7 @@ image(monarchImg, width / 2, 80, monarchSize, monarchSize);
     message = "Try harder, child!";
   }
 
-  // --- Computer AI (Player 1) ---
+  // --- Computer (Player 1) ---
   if (gBall.y < lPaddle.y + lPaddle.height / 2) lPaddle.moveUp();
   else if (gBall.y > lPaddle.y + lPaddle.height / 2) lPaddle.moveDown();
 
