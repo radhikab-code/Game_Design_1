@@ -127,7 +127,7 @@ function draw() {
         // small trail
         fill(255, 180, 80, 150);
         ellipse(skyFirework.x, skyFirework.y + 20, 8);
-        if (skyFirework.y < height / 3) {
+        if (skyFirework.y < height / 2.5) {
           fireworkExploded = true;
           explosionSoundEnd.play();
           for (let i = 0; i < 12; i++) {
