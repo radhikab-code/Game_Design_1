@@ -50,7 +50,7 @@ image(monarchImg, width / 2, 80, monarchSize, monarchSize);
   textAlign(LEFT, TOP);
   fill(255);
   text("Rounds: " + roundPoints + " / " + maxRounds, 20, 10);
-  text("Computer: " + player1 + "   Player: " + player2, 20, 40);
+  text("King: " + player1 + "   Player: " + player2, 20, 40);
 
   // --- Ball behaviour ---
   gBall.move();

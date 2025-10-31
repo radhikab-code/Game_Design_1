@@ -44,7 +44,7 @@ function draw() {
     fill(255);
     textAlign(CENTER);
     textSize(22);
-    text(" 🪔 IT'S DIWALI 🪔 ", width / 2, 320);
+    text(" 🪔 IT'S DIWALI 🪔 ", width / 2, 300);
     text(" 🌟  Press ENTER to start  🌟", width / 2, height/2);
   }
   else if(gameState == 2){
